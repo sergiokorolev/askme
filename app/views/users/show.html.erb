@@ -20,8 +20,13 @@
   </h2>
 
   <div class="user-ask-button container text-center">
-    <%# Используем встроенный в rails хелпер link_to %>
     <%= link_to "Спроси меня", '', class: 'button button-light', id: 'ask-button' %>
+  </div>
+
+  <%# Выводим количество вопросов и склонение слова "вопрос" в нужной форме %>
+  <div class="user-statistics container text-center">
+    <h1 class="title-small"><%= @questions_count %></h1>
+    <p><%= sklonenie(@questions_count, 'вопрос', 'вопроса', 'вопросов') %></p>
   </div>
 </div>
 
