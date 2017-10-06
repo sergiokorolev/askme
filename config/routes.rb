@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :users, except: [:destroy]
   # Ресурс сессий (только три экшена :new, :create, :destroy)
   resources :sessions, only: [:new, :create, :destroy]
-  resources :questions
+  resources :questions, except: [:show, :new, :index]
 
   # Синонимы путей — в дополнение к созданным в ресурсах выше.
   #
