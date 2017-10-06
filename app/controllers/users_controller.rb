@@ -1,5 +1,8 @@
 
 class UsersController < ApplicationController
+  # Загружаем юзера из базы для экшенов кроме :index, :create, :new
+  before_action :load_user, except: [:index, :create, :new]
+
   def index
     @users = User.all
   end
@@ -43,23 +46,20 @@ class UsersController < ApplicationController
   end
 
   # Это действие отзывается, когда пользователь заходит по адресу /users/:id,
-  # например /users/1.
+  # например /users/1
+  #
+  # Перед этим действием сработает before_action :load_user и в переменной @user
+  # у нас будет лежать пользовать с нужным id равным params[:id].
   def show
-    # Болванка пользователя
-    @user = User.new(
-        name: 'Serg',
-        username: 'sergio',
-        avatar_url: 'http://ru.playpw.com/forum/attachment.php?attachmentid=144436&d=1405139769'
-    )
+    # Достаем вопросы пользователя с помощью метода questions, который мы
+    # объявили в модели User (has_many :questions), у результата возврата этого
+    # метода вызываем метод order, который отсортирует вопросы по дате.
+    @questions = @user.questions.order(created_at: :desc)
 
-    # Болванка вопросов для пользователя
-    @questions = [
-        Question.new(text: 'В чем смысл жизни?', created_at: Date.parse('27.09.2017')),
-        Question.new(text: 'Есть ли жизнь на Марсе?', created_at: Date.parse('27.09.2017')),
-        Question.new(text: 'Как дела?', created_at: Date.parse('27.09.2017'))
-    ]
-
-    @new_question = Question.new
+    # Для формы нового вопроса, которая есть у нас на странице пользователя,
+    # создаем болванку вопроса, вызывая метод build у результата вызова метода
+    # @user.questions.
+    @new_question = @user.questions.build
     # Количество вопросов
     @questions_count = @questions.count
   end
@@ -70,6 +70,11 @@ class UsersController < ApplicationController
   # reject_user.
   def authorize_user
     reject_user unless @user == current_user
+  end
+
+  # Загружаем из базы запрошенного юзера, находя его по params[:id].
+  def load_user
+    @user ||= User.find params[:id]
   end
 
   # Явно задаем список разрешенных параметров для модели User. Мы говорим, что
