@@ -3,6 +3,11 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.1.4'
 gem 'jquery-rails'
 gem 'listen'
+gem 'uglifier'
+
+group :production do
+  gem 'pg'
+end
 
 group :development, :test do
   gem 'byebug'
