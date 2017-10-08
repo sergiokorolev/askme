@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validates :username, length: { maximum: 40 }
   validates :username, format: { with: /\A[a-zA-Z0-9\_]+\Z/ }
   validates_format_of :email, :with => /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+  validates :color, format: { with: /\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/i,
+                              message: 'Должен быть формата Hex color code (Например: #005A55)' }
 
   attr_accessor :password
   validates_presence_of :password, on: :create
