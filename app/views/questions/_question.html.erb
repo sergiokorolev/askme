@@ -6,7 +6,10 @@
   <div class="question-content">
     <%# Текст вопроса %>
     <div class="question-text text-lead">
-      <%= question.text %>
+      <%= question.text %><br />
+      <div class="author">
+        <%= link_to "@#{find_author(question).username}", user_path(find_author(question)) if find_author(question).present? %>
+      </div>
     </div>
 
     <%# Текст ответа, если он есть %>

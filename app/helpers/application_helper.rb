@@ -34,6 +34,10 @@ module ApplicationHelper
     end
   end
 
+  def find_author(question)
+    User.find(question.author_id) if question.author_id.present?
+  end
+
   # Хелпер, рисующий span тэг с иконкой из font-awesome
   def fa_icon(icon_class)
     content_tag 'span', '', class: "fa fa-#{icon_class}"

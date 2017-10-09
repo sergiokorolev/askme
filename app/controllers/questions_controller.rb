@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   # Инициализируем объект вопрос для экшенов кроме :edit, :update, :destroy
-  before_action :load_question, only: [:edit, :update, :destroy]
+  before_action :load_question, only: [:show, :edit, :update, :destroy]
 
   # Проверяем имеет ли юзер доступ к экшену для всей дествий, кроме задавания
   # вопроса, это действие может вызвать даже неавторизованный пользователь.
@@ -19,6 +19,7 @@ class QuestionsController < ApplicationController
   # /questions/edit
   def create
     @question = Question.new(question_params)
+    @question.author = current_user
 
     if @question.save
       redirect_to user_path(@question.user), notice: 'Вопрос задан'

@@ -41,3 +41,8 @@
 .question-actions a {
   margin-left: 10px;
 }
+
+.author {
+    color: #a0a0a0;
+    font-size: 12px;
+}
