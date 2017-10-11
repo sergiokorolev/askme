@@ -35,7 +35,7 @@ module ApplicationHelper
   end
 
   def find_author(question)
-    User.find(question.author_id) if question.author_id.present?
+    User.find(question.author_id) if question.author_id
   end
 
   # Хелпер, рисующий span тэг с иконкой из font-awesome

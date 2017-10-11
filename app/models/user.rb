@@ -6,19 +6,22 @@ class User < ApplicationRecord
 
   has_many :questions
 
+
   validates :email, :username, presence: true
   validates :email, :username, uniqueness: true
   validates :username, length: { maximum: 40 }
   validates :username, format: { with: /\A[a-zA-Z0-9\_]+\Z/ }
   validates_format_of :email, :with => /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
   validates :color, format: { with: /\A#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\z/i,
-                              message: 'Должен быть формата Hex color code (Например: #005A55)' }
+                              message: 'Должен быть формата Hex color code (Например: #005A55)' }, on: :update
+
 
   attr_accessor :password
   validates_presence_of :password, on: :create
   validates_confirmation_of :password
 
   before_save :encrypt_password
+  before_create :set_default_color
   before_validation :username_downcase
 
   def encrypt_password
@@ -49,5 +52,11 @@ class User < ApplicationRecord
 
   def username_downcase
     username.downcase! if !username.blank?
+  end
+
+
+  # Цвет фона пользователя по умолчанию.
+  def set_default_color
+    self.color = '#005a55'
   end
 end
